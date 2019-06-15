@@ -1,0 +1,17 @@
+filename = 'IOrecvtrap_2019AB_merged.txt'
+start_time 	= 20190611160000
+finish_time	= 20190611170000
+device_ip   = "A.B.C.D"
+
+input_file 	= open(filename, 'r')
+for chunk in input_file.read().split('#################################################################'):
+	if "IOrecvtrap" not in chunk:
+		for line in chunk.split("\n"):
+			if "time-stamp" in line:
+				time = line.split("=")[1].replace("\t",'').replace(" ",'').replace('"','')
+			if "Source Addr" in line:
+				device = line.split("=")[1].replace("\t",'').replace(" ",'').replace('"','')
+		if (  ( start_time < int(time) ) and ( int(time) < finish_time ) and (device_ip in device) ):
+			print(chunk)
+			print("=============================")
+
